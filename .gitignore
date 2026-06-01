@@ -1,0 +1,9 @@
+*.csv
+*.pkl
+node_modules/
+__pycache__/
+*.ipynb_checkpoints
+*.log
+*.tmp
+*.bak
+*.swp   
