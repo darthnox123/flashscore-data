@@ -11,6 +11,19 @@ const POSITION_ORDER: Record<string, number> = {
   Attacker: 4,
 }
 
+interface ParamOption {
+  value: unknown
+  label: string
+}
+
+interface ParamDef {
+  key: string
+  label: string
+  options: ParamOption[]
+}
+
+export type ModelType = 'lr' | 'rf' | 'xgb'
+
 @Component({
   selector: 'app-prediction',
   standalone: true,
@@ -39,6 +52,98 @@ export class PredictionComponent implements OnInit {
   result: PredictionResult | null = null
   loading = false
   error = ''
+
+  // ── Model config ────────────────────────────────────────────────────────────
+
+  selectedModel: ModelType = 'lr'
+
+  readonly MODEL_LABELS: Record<ModelType, string> = {
+    lr:  'Logistic Regression',
+    rf:  'Random Forest',
+    xgb: 'XGBoost',
+  }
+
+  readonly MODEL_PARAMS: Record<ModelType, ParamDef[]> = {
+    lr: [
+      {
+        key: 'C', label: 'Regularization C',
+        options: [
+          { value: 0.01, label: '0.01' },
+          { value: 0.1,  label: '0.1' },
+          { value: 1.0,  label: '1' },
+          { value: 10.0, label: '10' },
+        ],
+      },
+      {
+        key: 'solver', label: 'Solver',
+        options: [
+          { value: 'lbfgs', label: 'lbfgs' },
+          { value: 'saga',  label: 'saga' },
+        ],
+      },
+    ],
+    rf: [
+      {
+        key: 'n_estimators', label: 'Trees',
+        options: [
+          { value: 50,  label: '50' },
+          { value: 100, label: '100' },
+          { value: 200, label: '200' },
+        ],
+      },
+      {
+        key: 'max_depth', label: 'Max Depth',
+        options: [
+          { value: null, label: 'None' },
+          { value: 5,    label: '5' },
+          { value: 10,   label: '10' },
+        ],
+      },
+    ],
+    xgb: [
+      {
+        key: 'learning_rate', label: 'Learning Rate',
+        options: [
+          { value: 0.01, label: '0.01' },
+          { value: 0.1,  label: '0.1' },
+          { value: 0.3,  label: '0.3' },
+        ],
+      },
+      {
+        key: 'n_estimators', label: 'Trees',
+        options: [
+          { value: 50,  label: '50' },
+          { value: 100, label: '100' },
+          { value: 200, label: '200' },
+        ],
+      },
+    ],
+  }
+
+  private readonly DEFAULT_PARAMS: Record<ModelType, Record<string, unknown>> = {
+    lr:  { C: 1.0, solver: 'lbfgs' },
+    rf:  { n_estimators: 100, max_depth: null },
+    xgb: { learning_rate: 0.1, n_estimators: 100 },
+  }
+
+  selectedParams: Record<string, unknown> = { ...this.DEFAULT_PARAMS['lr'] }
+
+  get currentParamDefs(): ParamDef[] {
+    return this.MODEL_PARAMS[this.selectedModel]
+  }
+
+  selectModel(model: ModelType) {
+    this.selectedModel  = model
+    this.selectedParams = { ...this.DEFAULT_PARAMS[model] }
+    this.result         = null
+  }
+
+  setParam(key: string, value: unknown) {
+    this.selectedParams = { ...this.selectedParams, [key]: value }
+    this.result = null
+  }
+
+  // ── Team / player selection ──────────────────────────────────────────────────
 
   constructor(
     private readonly footballService: FootballService,
@@ -88,9 +193,9 @@ export class PredictionComponent implements OnInit {
   }
 
   filteredPlayers(side: 'home' | 'away'): FootballPlayer[] {
-    const pool = side === 'home' ? this.homeTeamPlayers : this.awayTeamPlayers
+    const pool     = side === 'home' ? this.homeTeamPlayers : this.awayTeamPlayers
     const selected = side === 'home' ? this.homePlayers : this.awayPlayers
-    const q = (side === 'home' ? this.homeSearch : this.awaySearch).toLowerCase()
+    const q        = (side === 'home' ? this.homeSearch : this.awaySearch).toLowerCase()
     return pool
       .filter((p) => p.name.toLowerCase().includes(q) && !selected.find((s) => s.id === p.id))
       .slice(0, 15)
@@ -145,21 +250,23 @@ export class PredictionComponent implements OnInit {
   predict() {
     if (!this.canPredict) return
     this.loading = true
-    this.error = ''
-    this.result = null
+    this.error   = ''
+    this.result  = null
 
     this.predictionService
       .predict(
         this.homePlayers.map((p) => p.name),
         this.awayPlayers.map((p) => p.name),
+        this.selectedModel,
+        this.selectedParams,
       )
       .subscribe({
         next: (res) => {
-          this.result = res
+          this.result  = res
           this.loading = false
         },
         error: () => {
-          this.error = 'Prediction failed. Please check that the ML service is running.'
+          this.error   = 'Prediction failed. Please check that the ML service is running.'
           this.loading = false
         },
       })
