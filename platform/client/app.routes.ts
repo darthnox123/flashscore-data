@@ -2,14 +2,8 @@ import { Routes } from '@angular/router'
 
 export const routes: Routes = [
   {
-    path: '',
+    path: '**',
     loadComponent: () =>
-      import('./layouts/base-layout.component').then((m) => m.BaseLayoutComponent),
-    children: [
-      {
-        path: '',
-        loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
-      },
-    ],
+      import('./pages/prediction/prediction.component').then((m) => m.PredictionComponent),
   },
 ]

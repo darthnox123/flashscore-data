@@ -1,4 +1,15 @@
 services:
+  prediction:
+    build:
+      context: ./prediction-service
+      dockerfile: Dockerfile
+    volumes:
+      - ../ml-data:/data:ro
+    environment:
+      MODEL_PATH: /data/best_model.pkl
+      DATA_PATH: /data/player_stats.csv
+    restart: unless-stopped
+
   app:
     build:
       context: .
@@ -10,17 +21,24 @@ services:
       - .env
     environment:
       NODE_ENV: production
+      DB_HOST: postgres
+      REDIS_URL: redis://redis:6379
+      PREDICTION_SERVICE_URL: http://prediction:8001
+      FOOTBALL_API_KEY: ${FOOTBALL_API_KEY}
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+      prediction:
+        condition: service_started
     restart: unless-stopped
+
 
   postgres:
     image: postgres:16-alpine
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - "${DB_PORT:-5433}:5432"
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASS:-postgres}
@@ -37,7 +55,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "6380:6379"
     volumes:
       - redis_data:/data
     healthcheck:

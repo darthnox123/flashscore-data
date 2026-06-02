@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { CacheModule } from '@nestjs/cache-manager'
 import { SsrModule } from './ssr/ssr.module'
 import { HealthModule } from './api/health/health.module'
+import { PredictionModule } from './api/prediction/prediction.module'
+import { FootballModule } from './api/football/football.module'
 
 @Module({
   imports: [
@@ -27,8 +29,10 @@ import { HealthModule } from './api/health/health.module'
         ],
       }),
     }),
-    SsrModule,
     HealthModule,
+    PredictionModule,
+    FootballModule,
+    SsrModule,
   ],
 })
 export class AppModule {}

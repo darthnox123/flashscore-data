@@ -1,68 +1,33 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { existsSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
 import { resolve, join } from 'path'
+import type { Request, Response, NextFunction } from 'express'
 
 @Injectable()
 export class SsrService {
   private readonly logger = new Logger(SsrService.name)
-  private renderFn: ((url: string) => Promise<string>) | null = null
-  private readonly isProd = process.env.NODE_ENV === 'production'
+  private indexHtml: string | null = null
   private readonly browserDistFolder = resolve(process.cwd(), 'dist/client/browser')
-  private readonly serverDistFolder = resolve(process.cwd(), 'dist/client/server')
 
-  async initialize(_expressApp: import('express').Application) {
-    await this.initAngularSsr()
-  }
+  async initialize(expressApp: import('express').Application) {
+    const { default: express } = await import('express')
+    expressApp.use(express.static(this.browserDistFolder, { maxAge: '1y', index: false }))
 
-  private async initAngularSsr() {
-    const serverBundle = join(this.serverDistFolder, 'main.server.mjs')
-
-    if (!existsSync(serverBundle)) {
-      this.logger.warn(
-        'Angular SSR bundle not found. Run `npm run build:client` first.',
-      )
-      return
-    }
-
-    const indexHtml = join(this.browserDistFolder, 'index.html')
-
-    if (!existsSync(indexHtml)) {
+    const indexPath = join(this.browserDistFolder, 'index.csr.html')
+    if (existsSync(indexPath)) {
+      this.indexHtml = readFileSync(indexPath, 'utf-8')
+      this.logger.log('Angular client-side rendering initialized')
+    } else {
       this.logger.warn('Angular browser build not found. Run `npm run build:client` first.')
-      return
     }
-
-    const { CommonEngine } = await import('@angular/ssr/node')
-    const { default: bootstrap } = await import(serverBundle)
-    const { APP_BASE_HREF } = await import('@angular/common')
-
-    const engine = new CommonEngine()
-
-    this.renderFn = async (url: string) => {
-      return engine.render({
-        bootstrap,
-        documentFilePath: indexHtml,
-        url: `http://localhost${url}`,
-        publicPath: this.browserDistFolder,
-        providers: [{ provide: APP_BASE_HREF, useValue: new URL(`http://localhost${url}`).pathname }],
-      })
-    }
-
-    this.logger.log(
-      `Angular SSR initialized in ${this.isProd ? 'production' : 'development'} mode`,
-    )
   }
 
-  async render(url: string): Promise<string> {
-    if (!this.renderFn) {
-      return this.fallbackPage()
+  async render(req: Request, res: Response, _next: NextFunction): Promise<void> {
+    if (!this.indexHtml) {
+      res.status(200).set({ 'Content-Type': 'text/html' }).send(this.fallbackPage())
+      return
     }
-
-    try {
-      return await this.renderFn(url)
-    } catch (e) {
-      this.logger.error(`SSR render error for ${url}`, e)
-      throw e
-    }
+    res.status(200).set({ 'Content-Type': 'text/html' }).send(this.indexHtml)
   }
 
   private fallbackPage(): string {

@@ -6,5 +6,6 @@ __pycache__/
 *.log
 *.tmp
 *.bak
-*.swp   
+*.swp
 dist/
+.env

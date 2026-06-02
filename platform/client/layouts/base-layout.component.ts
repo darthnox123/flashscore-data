@@ -1,10 +1,10 @@
 import { Component } from '@angular/core'
-import { RouterOutlet, RouterLink } from '@angular/router'
+import { RouterOutlet } from '@angular/router'
 
 @Component({
   selector: 'app-base-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet],
   templateUrl: './base-layout.component.html',
 })
 export class BaseLayoutComponent {

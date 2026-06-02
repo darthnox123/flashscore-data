@@ -1,20 +1,26 @@
-<div class="min-h-screen bg-background text-foreground flex flex-col">
-  <header class="border-b border-border px-6 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <a routerLink="/" class="text-xl font-bold text-primary">Platform</a>
-      <nav class="flex gap-4">
-        <a routerLink="/" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
-          Home
-        </a>
-      </nav>
+<div style="min-height:100vh; display:flex; flex-direction:column; background:#070D1B;">
+
+  <header style="background:#0A1428; border-bottom:1px solid rgba(245,158,11,0.15); position:sticky; top:0; z-index:50;">
+    <div style="max-width:1200px; margin:0 auto; padding:0 1.5rem; height:3.5rem; display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:0.625rem;">
+        <span style="font-size:1.3rem;">⚽</span>
+        <span style="font-family:Poppins,sans-serif; font-weight:700; font-size:1.1rem; letter-spacing:-0.02em;">
+          <span style="color:#F59E0B;">Scout</span><span style="color:white;">AI</span>
+        </span>
+        <span style="font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:999px; background:rgba(245,158,11,0.15); color:#F59E0B; font-weight:600; border:1px solid rgba(245,158,11,0.2); margin-left:0.25rem;">BETA</span>
+      </div>
+      <span style="font-size:0.75rem; color:rgba(255,255,255,0.4);">Primeira Liga · 2024/25</span>
     </div>
   </header>
 
-  <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+  <main style="flex:1;">
     <router-outlet />
   </main>
 
-  <footer class="border-t border-border px-6 py-4 text-center text-sm text-muted-foreground">
-    Platform &copy; {{ currentYear }}
+  <footer style="border-top:1px solid rgba(255,255,255,0.06); padding:1.25rem 1.5rem; text-align:center; background:#0A1428;">
+    <p style="font-size:0.72rem; color:rgba(255,255,255,0.25);">
+      ⚽ ScoutAI &copy; {{ currentYear }} &nbsp;·&nbsp; Model trained on the Portuguese Primeira Liga &nbsp;·&nbsp; Not for gambling use
+    </p>
   </footer>
+
 </div>

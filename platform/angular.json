@@ -20,7 +20,9 @@
             "index": "index.html",
             "browser": "client/main.ts",
             "server": "client/main.server.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.json",
             "assets": [
               {
@@ -29,11 +31,13 @@
                 "output": "assets/images"
               }
             ],
-            "styles": ["client/assets/css/app.css"],
+            "styles": [
+              "client/assets/css/app.css"
+            ],
             "scripts": [],
             "prerender": false,
             "ssr": {
-              "entry": "client/main.server.ts"
+              "entry": "client/server.ts"
             }
           },
           "configurations": {
@@ -69,7 +73,8 @@
               "buildTarget": "platform:build:production"
             },
             "development": {
-              "buildTarget": "platform:build:development"
+              "buildTarget": "platform:build:development",
+              "proxyConfig": "client/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
