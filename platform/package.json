@@ -8,7 +8,7 @@
     "start:dev:prediction": "cd prediction-service && uvicorn main:app --reload --port 8001",
     "dev:services": "docker compose -f docker-compose.dev.yml up -d",
     "dev": "concurrently \"npm run start:dev\" \"npm run start:dev:client\" \"npm run start:dev:prediction\"",
-    "build": "nest build && ng build",
+    "build": "node build-css.js && nest build && ng build",
     "build:client": "ng build",
     "start": "NODE_ENV=production node dist/main",
     "lint": "eslint \"{src,client}/**/*.ts\" --fix",

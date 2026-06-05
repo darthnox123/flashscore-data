@@ -32,7 +32,7 @@
               }
             ],
             "styles": [
-              "client/assets/css/app.css"
+              "client/assets/css/styles.built.css"
             ],
             "scripts": [],
             "prerender": false,
