@@ -1,0 +1,42 @@
+<section class="bg-navy-900 py-12 lg:py-16 border-t border-amber-500/10">
+  <div class="max-w-3xl mx-auto px-4 lg:px-6 text-center">
+
+    <!-- Tag -->
+    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[0.7rem] font-bold tracking-widest uppercase mb-4 lg:mb-5">
+      How it works
+    </div>
+
+    <h2 class="text-2xl lg:text-3xl font-bold text-white mb-3">
+      Build your XI, tune the model, get the prediction
+    </h2>
+    <p class="text-sm lg:text-[0.95rem] text-white/45 max-w-xl mx-auto mb-10 lg:mb-12 leading-relaxed">
+      ScoutAI lets you choose between Logistic Regression, Random Forest and XGBoost, each with configurable
+      hyperparameters. Models are trained on-demand and cached — the first run takes a few seconds, subsequent
+      runs are instant.
+    </p>
+
+    <!-- Steps -->
+    <div class="flex flex-col sm:flex-row gap-4 lg:gap-6 justify-center mb-10 lg:mb-12">
+      @for (step of steps; track step.title) {
+        <div class="flex-1 sm:max-w-[260px] bg-navy-800 border border-white/[0.07] rounded-xl p-5 lg:p-6 text-left">
+          <div [class]="stepIconClass(step.color)">{{ step.icon }}</div>
+          <p class="font-bold text-white text-sm mb-1.5">{{ step.title }}</p>
+          <p class="text-sm text-white/40 leading-relaxed m-0">{{ step.desc }}</p>
+        </div>
+      }
+    </div>
+
+    <!-- Stats row -->
+    <div class="grid grid-cols-2 sm:flex bg-navy-800 border border-white/[0.07] rounded-xl overflow-hidden">
+      @for (stat of stats; track stat.label; let last = $last) {
+        <div class="flex-1 py-4 lg:py-5 text-center border-white/[0.07]"
+             [class.border-r]="!last"
+             [class.border-b]="false">
+          <p class="font-bold text-2xl mb-1 m-0" [class]="stat.color">{{ stat.value }}</p>
+          <p class="text-[0.75rem] text-white/35 m-0">{{ stat.label }}</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</section>

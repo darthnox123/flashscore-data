@@ -1,0 +1,62 @@
+<div [class]="containerClass">
+
+  <!-- Label -->
+  <p [class]="labelClass()">{{ isHome ? '🏠 Home Side' : '✈️ Away Side' }}</p>
+
+  <!-- Team selector -->
+  <select
+    class="w-full px-3 py-2 text-sm bg-navy-700 border border-white/[0.12] rounded-md text-slate-100 outline-none cursor-pointer"
+    (change)="onTeamChange($event)">
+    <option value="" disabled [selected]="!selectedTeamId">Browse squad from...</option>
+    @for (team of teams; track team.id) {
+      <option [value]="team.id" [selected]="selectedTeamId === team.id">{{ team.name }}</option>
+    }
+  </select>
+
+  <!-- Player search -->
+  @if (selectedTeamId) {
+    @if (loadingPlayers) {
+      <p class="text-sm text-white/35 flex items-center gap-2 m-0">
+        <app-spinner /> Loading squad...
+      </p>
+    } @else {
+      <app-player-search
+        [players]="availablePlayers"
+        [disabled]="selectedPlayers.length === 11"
+        [side]="side"
+        (playerSelected)="playerAdded.emit($event)"
+      />
+    }
+  }
+
+  <!-- Player list — scrollable on mobile, max height capped -->
+  <div class="flex flex-col gap-1 overflow-y-auto max-h-64 lg:max-h-none lg:flex-1">
+    @for (player of sortedSelected; track player.id; let i = $index) {
+      <div [class]="playerRowClass()">
+        <span [class]="indexClass()">{{ i + 1 }}</span>
+        <img
+          [src]="player.photo"
+          class="w-6 h-6 rounded-full object-cover bg-navy-600 shrink-0 border border-white/[0.08]"
+          (error)="$any($event.target).style.visibility='hidden'"
+        />
+        <p class="flex-1 text-[0.78rem] font-semibold text-slate-100 truncate m-0">{{ player.name }}</p>
+        <span [class]="positionBadgeClass()">{{ player.position.charAt(0) }}</span>
+        <button
+          type="button"
+          (click)="playerRemoved.emit(player.id)"
+          class="opacity-0 group-hover:opacity-100 transition-opacity w-4 h-4 flex items-center justify-center rounded bg-red-500/20 text-red-300 text-[0.6rem] border-none cursor-pointer shrink-0 p-0">
+          ✕
+        </button>
+      </div>
+    }
+
+    @for (slot of emptySlots; track slot) {
+      <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-dashed border-white/[0.07]">
+        <span class="text-[0.62rem] w-4 text-right text-white/15 shrink-0">{{ selectedPlayers.length + slot }}</span>
+        <div class="w-6 h-6 rounded-full bg-white/[0.04] shrink-0"></div>
+        <p class="text-[0.75rem] text-white/15 italic m-0">Empty</p>
+      </div>
+    }
+  </div>
+
+</div>

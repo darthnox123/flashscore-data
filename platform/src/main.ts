@@ -9,6 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }))
+  app.enableCors({ origin: 'https://teu-dominio.com', credentials: true })
 
   const ssrService = app.get(SsrService)
   await ssrService.initialize(app.getHttpAdapter().getInstance())

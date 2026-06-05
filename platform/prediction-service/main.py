@@ -8,7 +8,7 @@ app = FastAPI(title='Match Prediction Service')
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=['http://futscout.win/']  # tirar o *
     allow_methods=['GET', 'POST'],
     allow_headers=['*'],
 )

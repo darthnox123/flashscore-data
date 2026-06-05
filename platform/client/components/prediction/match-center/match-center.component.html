@@ -1,0 +1,94 @@
+<!-- Mobile: horizontal strip (order-3, below both panels) -->
+<!-- Desktop: vertical column (order-2, between panels) -->
+<div class="
+  w-full lg:w-40 shrink-0
+  flex flex-row lg:flex-col
+  items-center justify-between lg:justify-center
+  gap-4
+  py-3 px-4 lg:py-6 lg:px-3
+  bg-black/15
+  border-t lg:border-t-0 lg:border-r border-white/[0.06]">
+
+  <!-- Progress bars + model badge -->
+  <div class="flex-1 lg:w-full flex flex-col gap-2 lg:gap-2.5">
+
+    <div>
+      <div class="flex justify-between text-[0.62rem] text-white/40 mb-1">
+        <span>Home</span>
+        <span class="text-emerald-400 font-bold">{{ homeCount }}/11</span>
+      </div>
+      <div class="h-0.5 bg-white/[0.08] rounded-full overflow-hidden">
+        <div class="h-full bg-emerald-400 rounded-full transition-all duration-400" [style.width.%]="(homeCount / 11) * 100"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex justify-between text-[0.62rem] text-white/40 mb-1">
+        <span>Away</span>
+        <span class="text-blue-400 font-bold">{{ awayCount }}/11</span>
+      </div>
+      <div class="h-0.5 bg-white/[0.08] rounded-full overflow-hidden">
+        <div class="h-full bg-blue-400 rounded-full transition-all duration-400" [style.width.%]="(awayCount / 11) * 100"></div>
+      </div>
+    </div>
+
+    <!-- Model badge — visible on desktop, hidden on mobile -->
+    <div class="hidden lg:block w-full px-2.5 py-2 bg-violet-500/8 border border-violet-500/20 rounded-md text-center mt-1">
+      <p class="text-[0.6rem] uppercase tracking-widest text-violet-400/60 m-0 mb-0.5 font-bold">Model</p>
+      <p class="text-[0.72rem] font-bold text-violet-400 m-0">{{ selectedModel.toUpperCase() }}</p>
+    </div>
+
+  </div>
+
+  <!-- Actions: model badge (mobile) + predict button + clear buttons -->
+  <div class="flex flex-col items-center gap-2 shrink-0 lg:w-full">
+
+    <!-- Model badge — visible on mobile only -->
+    <div class="lg:hidden px-2.5 py-1.5 bg-violet-500/8 border border-violet-500/20 rounded-md text-center">
+      <p class="text-[0.6rem] uppercase tracking-widest text-violet-400/60 m-0 leading-none font-bold">Model</p>
+      <p class="text-[0.7rem] font-bold text-violet-400 m-0">{{ selectedModel.toUpperCase() }}</p>
+    </div>
+
+    <!-- Predict button -->
+    <button
+      type="button"
+      [class]="predictBtnClass"
+      [disabled]="!canPredict || loading"
+      (click)="predict.emit()">
+      @if (loading) {
+        <app-spinner /> Training...
+      } @else if (canPredict) {
+        🔮 Predict
+      } @else {
+        {{ remaining }} more
+      }
+    </button>
+
+    @if (!canPredict && !loading) {
+      <p class="hidden lg:block text-[0.62rem] text-white/30 text-center leading-relaxed m-0">11 per side</p>
+    }
+
+    <!-- Clear buttons -->
+    @if (homeCount > 0 || awayCount > 0) {
+      <div class="flex flex-row lg:flex-col gap-1.5 lg:w-full">
+        @if (homeCount > 0) {
+          <button
+            type="button"
+            (click)="clearHome.emit()"
+            class="py-1 px-2 lg:px-0 lg:w-full text-[0.65rem] text-white/50 bg-white/5 border border-white/[0.08] rounded-md cursor-pointer transition-all duration-150 hover:bg-red-500/15 hover:text-red-300">
+            Clear H
+          </button>
+        }
+        @if (awayCount > 0) {
+          <button
+            type="button"
+            (click)="clearAway.emit()"
+            class="py-1 px-2 lg:px-0 lg:w-full text-[0.65rem] text-white/50 bg-white/5 border border-white/[0.08] rounded-md cursor-pointer transition-all duration-150 hover:bg-red-500/15 hover:text-red-300">
+            Clear A
+          </button>
+        }
+      </div>
+    }
+
+  </div>
+</div>

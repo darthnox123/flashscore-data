@@ -1,4 +1,15 @@
 @import "tailwindcss";
+@plugin "flowbite/plugin";
+
+@theme {
+  --color-navy-950: #070D1B;
+  --color-navy-900: #0A1428;
+  --color-navy-850: #0A1E3D;
+  --color-navy-800: #0D1B35;
+  --color-navy-700: #142249;
+  --color-navy-600: #1E3A5F;
+  --font-family-heading: Poppins, ui-sans-serif, system-ui, sans-serif;
+}
 
 * {
   font-family: "Open Sans", ui-sans-serif, system-ui, sans-serif;
@@ -6,7 +17,7 @@
 }
 
 h1, h2, h3, h4 {
-  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  font-family: Poppins, ui-sans-serif, system-ui, sans-serif;
 }
 
 body {

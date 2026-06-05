@@ -1,0 +1,87 @@
+<div class="mt-5 lg:mt-6 bg-navy-800 rounded-2xl border border-amber-500/20 overflow-hidden shadow-2xl shadow-black/40">
+
+  <!-- Header -->
+  <div class="bg-gradient-to-br from-[#1A2E0A] to-[#0F2B10] px-4 lg:px-6 py-3 lg:py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 lg:gap-3">
+    <div class="flex items-center gap-2 lg:gap-3 flex-wrap">
+      <h3 class="font-bold text-white text-sm lg:text-base m-0">🔮 Prediction Result</h3>
+      <app-badge color="purple">{{ selectedModel.toUpperCase() }}</app-badge>
+      @if (result.accuracy !== undefined) {
+        <app-badge color="amber">{{ result.accuracy }}% acc.</app-badge>
+      }
+    </div>
+    <div class="flex items-center gap-2 lg:gap-3 text-xs lg:text-sm">
+      @if (homeTeamLogo) {
+        <img [src]="homeTeamLogo" class="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
+      }
+      <span class="font-semibold text-white">{{ homeTeamName || 'Home' }}</span>
+      <span class="text-amber-400 font-bold">vs</span>
+      <span class="font-semibold text-white">{{ awayTeamName || 'Away' }}</span>
+      @if (awayTeamLogo) {
+        <img [src]="awayTeamLogo" class="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
+      }
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="p-4 lg:p-6 flex flex-col sm:flex-row gap-6 lg:gap-8 items-stretch">
+
+    <!-- Probability bars -->
+    <div class="flex-1 flex flex-col justify-center gap-4 lg:gap-5">
+      <app-progress-bar
+        color="green"
+        [value]="result.H"
+        [displayValue]="result.H + '%'"
+        [label]="(homeTeamName || 'Home') + ' wins'"
+      />
+      <app-progress-bar
+        color="amber"
+        [value]="result.D"
+        [displayValue]="result.D + '%'"
+        label="Draw"
+      />
+      <app-progress-bar
+        color="blue"
+        [value]="result.A"
+        [displayValue]="result.A + '%'"
+        [label]="(awayTeamName || 'Away') + ' wins'"
+      />
+    </div>
+
+    <!-- Favourite callout -->
+    <div class="flex flex-row sm:flex-col items-center justify-center gap-3 px-5 lg:px-8 py-4 lg:py-6 bg-amber-500/5 border border-amber-500/15 rounded-xl text-center sm:min-w-[130px]">
+      @switch (favourite) {
+        @case ('home') {
+          @if (homeTeamLogo) {
+            <img [src]="homeTeamLogo" class="w-10 h-10 lg:w-12 lg:h-12 object-contain shrink-0" />
+          }
+          <div>
+            <p class="text-[0.65rem] uppercase tracking-widest text-white/40 m-0 font-semibold">Favourite</p>
+            <p class="font-bold text-emerald-400 text-sm lg:text-base m-0">{{ homeTeamName || 'Home' }}</p>
+          </div>
+        }
+        @case ('away') {
+          @if (awayTeamLogo) {
+            <img [src]="awayTeamLogo" class="w-10 h-10 lg:w-12 lg:h-12 object-contain shrink-0" />
+          }
+          <div>
+            <p class="text-[0.65rem] uppercase tracking-widest text-white/40 m-0 font-semibold">Favourite</p>
+            <p class="font-bold text-blue-400 text-sm lg:text-base m-0">{{ awayTeamName || 'Away' }}</p>
+          </div>
+        }
+        @default {
+          <span class="text-3xl lg:text-4xl leading-none shrink-0">🤝</span>
+          <div>
+            <p class="text-[0.65rem] uppercase tracking-widest text-white/40 m-0 font-semibold">Most likely</p>
+            <p class="font-bold text-amber-400 text-sm lg:text-base m-0">Draw</p>
+          </div>
+        }
+      }
+      @if (result.accuracy !== undefined) {
+        <p class="text-[0.6rem] text-white/25 m-0 sm:mt-1">{{ result.accuracy }}% accuracy</p>
+      } @else {
+        <p class="text-[0.6rem] text-white/25 m-0 sm:mt-1">~43% accuracy</p>
+      }
+    </div>
+
+  </div>
+</div>

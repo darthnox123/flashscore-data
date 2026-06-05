@@ -1,25 +1,25 @@
-<div style="min-height:100vh; display:flex; flex-direction:column; background:#070D1B;">
+<div class="min-h-screen flex flex-col bg-navy-950">
 
-  <header style="background:#0A1428; border-bottom:1px solid rgba(245,158,11,0.15); position:sticky; top:0; z-index:50;">
-    <div style="max-width:1200px; margin:0 auto; padding:0 1.5rem; height:3.5rem; display:flex; align-items:center; justify-content:space-between;">
-      <div style="display:flex; align-items:center; gap:0.625rem;">
-        <span style="font-size:1.3rem;">⚽</span>
-        <span style="font-family:Poppins,sans-serif; font-weight:700; font-size:1.1rem; letter-spacing:-0.02em;">
-          <span style="color:#F59E0B;">Scout</span><span style="color:white;">AI</span>
+  <header class="bg-navy-900 border-b border-amber-500/15 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 lg:px-6 h-12 lg:h-14 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-lg lg:text-xl">⚽</span>
+        <span class="font-bold text-base lg:text-lg tracking-tight">
+          <span class="text-amber-400">Scout</span><span class="text-white">AI</span>
         </span>
-        <span style="font-size:0.65rem; padding:0.2rem 0.5rem; border-radius:999px; background:rgba(245,158,11,0.15); color:#F59E0B; font-weight:600; border:1px solid rgba(245,158,11,0.2); margin-left:0.25rem;">BETA</span>
+        <span class="text-[0.6rem] lg:text-[0.65rem] px-1.5 lg:px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 font-semibold border border-amber-500/20 ml-1">BETA</span>
       </div>
-      <span style="font-size:0.75rem; color:rgba(255,255,255,0.4);">Primeira Liga · 2024/25</span>
+      <span class="text-[0.7rem] lg:text-[0.75rem] text-white/40 hidden sm:block">Primeira Liga · 2024/25</span>
     </div>
   </header>
 
-  <main style="flex:1;">
+  <main class="flex-1">
     <router-outlet />
   </main>
 
-  <footer style="border-top:1px solid rgba(255,255,255,0.06); padding:1.25rem 1.5rem; text-align:center; background:#0A1428;">
-    <p style="font-size:0.72rem; color:rgba(255,255,255,0.25);">
-      ⚽ ScoutAI &copy; {{ currentYear }} &nbsp;·&nbsp; Model trained on the Portuguese Primeira Liga &nbsp;·&nbsp; Not for gambling use
+  <footer class="border-t border-white/[0.06] py-4 lg:py-5 px-4 lg:px-6 text-center bg-navy-900">
+    <p class="text-[0.7rem] lg:text-[0.72rem] text-white/25 m-0">
+      ⚽ ScoutAI &copy; {{ currentYear }} &nbsp;·&nbsp; Primeira Liga &nbsp;·&nbsp; Not for gambling use
     </p>
   </footer>
 

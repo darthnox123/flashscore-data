@@ -1,0 +1,35 @@
+<div class="bg-navy-800 rounded-xl border border-violet-500/20 px-4 lg:px-6 py-3 lg:py-4 mb-4 flex flex-wrap items-start gap-4 lg:gap-6">
+
+  <!-- Model selector -->
+  <div class="shrink-0">
+    <p class="text-[0.62rem] font-bold uppercase tracking-widest text-white/35 mb-2">Model</p>
+    <div class="flex gap-1.5">
+      @for (m of MODELS; track m.key) {
+        <button type="button" (click)="selectModel(m.key)" [class]="modelBtnClass(m.key)">
+          {{ m.short }}
+        </button>
+      }
+    </div>
+    <p class="text-[0.67rem] text-violet-400/70 mt-1.5 italic">{{ MODEL_LABELS[selectedModel] }}</p>
+  </div>
+
+  <!-- Divider — only visible on wider screens -->
+  <div class="hidden sm:block w-px self-stretch bg-white/[0.07] shrink-0"></div>
+
+  <!-- Param pills -->
+  <div class="flex-1 flex flex-wrap gap-4 lg:gap-5">
+    @for (param of currentParamDefs; track param.key) {
+      <div>
+        <p class="text-[0.62rem] font-bold uppercase tracking-widest text-white/35 mb-1.5 lg:mb-2">{{ param.label }}</p>
+        <div class="flex gap-1.5 flex-wrap">
+          @for (opt of param.options; track opt.label) {
+            <button type="button" (click)="setParam(param.key, opt.value)" [class]="paramBtnClass(param.key, opt.value)">
+              {{ opt.label }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
