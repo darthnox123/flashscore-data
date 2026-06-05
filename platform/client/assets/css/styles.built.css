@@ -861,9 +861,6 @@
     --tw-gradient-to: var(--color-emerald-500);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
-  .object-contain {
-    object-fit: contain;
-  }
   .object-cover {
     object-fit: cover;
   }
@@ -1410,16 +1407,6 @@
       display: none;
     }
   }
-  .lg\:h-5 {
-    @media (width >= 64rem) {
-      height: calc(var(--spacing) * 5);
-    }
-  }
-  .lg\:h-12 {
-    @media (width >= 64rem) {
-      height: calc(var(--spacing) * 12);
-    }
-  }
   .lg\:h-14 {
     @media (width >= 64rem) {
       height: calc(var(--spacing) * 14);
@@ -1428,21 +1415,6 @@
   .lg\:max-h-none {
     @media (width >= 64rem) {
       max-height: none;
-    }
-  }
-  .lg\:min-h-\[480px\] {
-    @media (width >= 64rem) {
-      min-height: 480px;
-    }
-  }
-  .lg\:w-5 {
-    @media (width >= 64rem) {
-      width: calc(var(--spacing) * 5);
-    }
-  }
-  .lg\:w-12 {
-    @media (width >= 64rem) {
-      width: calc(var(--spacing) * 12);
     }
   }
   .lg\:w-14 {
