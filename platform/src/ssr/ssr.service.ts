@@ -16,6 +16,8 @@ export class SsrService {
     const indexPath = join(this.browserDistFolder, 'index.csr.html')
     if (existsSync(indexPath)) {
       this.indexHtml = readFileSync(indexPath, 'utf-8')
+        .replace(/ media="print" onload="this\.media='all'"/g, '')
+        .replace(/<noscript><link rel="stylesheet" href="[^"]+"><\/noscript>/g, '')
       this.logger.log('Angular client-side rendering initialized')
     } else {
       this.logger.warn('Angular browser build not found. Run `npm run build:client` first.')

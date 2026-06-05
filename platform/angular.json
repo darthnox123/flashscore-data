@@ -55,16 +55,7 @@
                 }
               ],
               "outputHashing": "all",
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCriticalCss": false
-                },
-                "fonts": {
-                  "inline": true
-                }
-              }
+              "optimization": true
             },
             "development": {
               "optimization": false,
