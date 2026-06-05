@@ -10,15 +10,9 @@
       }
     </div>
     <div class="flex items-center gap-2 lg:gap-3 text-xs lg:text-sm">
-      @if (homeTeamLogo) {
-        <img [src]="homeTeamLogo" class="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
-      }
-      <span class="font-semibold text-white">{{ homeTeamName || 'Home' }}</span>
+      <span class="font-semibold text-white">'Home'</span>
       <span class="text-amber-400 font-bold">vs</span>
-      <span class="font-semibold text-white">{{ awayTeamName || 'Away' }}</span>
-      @if (awayTeamLogo) {
-        <img [src]="awayTeamLogo" class="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
-      }
+      <span class="font-semibold text-white">'Away'</span>
     </div>
   </div>
 
@@ -51,18 +45,12 @@
     <div class="flex flex-row sm:flex-col items-center justify-center gap-3 px-5 lg:px-8 py-4 lg:py-6 bg-amber-500/5 border border-amber-500/15 rounded-xl text-center sm:min-w-[130px]">
       @switch (favourite) {
         @case ('home') {
-          @if (homeTeamLogo) {
-            <img [src]="homeTeamLogo" class="w-10 h-10 lg:w-12 lg:h-12 object-contain shrink-0" />
-          }
           <div>
             <p class="text-[0.65rem] uppercase tracking-widest text-white/40 m-0 font-semibold">Favourite</p>
             <p class="font-bold text-emerald-400 text-sm lg:text-base m-0">{{ homeTeamName || 'Home' }}</p>
           </div>
         }
         @case ('away') {
-          @if (awayTeamLogo) {
-            <img [src]="awayTeamLogo" class="w-10 h-10 lg:w-12 lg:h-12 object-contain shrink-0" />
-          }
           <div>
             <p class="text-[0.65rem] uppercase tracking-widest text-white/40 m-0 font-semibold">Favourite</p>
             <p class="font-bold text-blue-400 text-sm lg:text-base m-0">{{ awayTeamName || 'Away' }}</p>
