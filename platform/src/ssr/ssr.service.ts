@@ -15,12 +15,13 @@ export class SsrService {
     expressApp.use(express.static(this.browserDistFolder, { maxAge: '1y', index: false }))
 
     try {
-      const serverEntryPath = resolve(process.cwd(), 'dist/client/server/server.mjs')
-      const { default: handler } = await import(serverEntryPath)
+      const serverDir = resolve(process.cwd(), 'dist/client/server')
+      await import(`${serverDir}/angular-app-engine-manifest.mjs`)
+      const { default: handler } = await import(`${serverDir}/server.mjs`)
       this.ssrHandler = handler
       this.logger.log('Angular SSR initialized')
     } catch (err) {
-      this.logger.warn(`Angular SSR bundle not found at dist/client/server/server.mjs: ${err}`)
+      this.logger.warn(`Angular SSR initialization failed: ${err}`)
     }
   }
 
