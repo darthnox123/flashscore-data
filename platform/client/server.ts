@@ -1,4 +1,5 @@
 import { AngularNodeAppEngine, createNodeRequestHandler, writeResponseToNodeResponse } from '@angular/ssr/node'
+import { ɵsetAngularAppEngineManifest as setEngineManifest, ɵsetAngularAppManifest as setAppManifest } from '@angular/ssr'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -8,8 +9,12 @@ async function getApp(): Promise<AngularNodeAppEngine> {
   if (!angularApp) {
     const dir = dirname(fileURLToPath(import.meta.url))
     const toUrl = (f: string) => pathToFileURL(join(dir, f)).href
-    await import(/* webpackIgnore: true */ toUrl('angular-app-manifest.mjs'))
-    await import(/* webpackIgnore: true */ toUrl('angular-app-engine-manifest.mjs'))
+    const [{ default: appManifest }, { default: engineManifest }] = await Promise.all([
+      import(toUrl('angular-app-manifest.mjs')),
+      import(toUrl('angular-app-engine-manifest.mjs')),
+    ])
+    setAppManifest(appManifest)
+    setEngineManifest(engineManifest)
     angularApp = new AngularNodeAppEngine()
   }
   return angularApp
