@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { resolve } from 'path'
+import { resolve, join } from 'path'
+import { pathToFileURL } from 'url'
 import type { Request, Response, NextFunction } from 'express'
 
 type SsrHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>
@@ -16,8 +17,10 @@ export class SsrService {
 
     try {
       const serverDir = resolve(process.cwd(), 'dist/client/server')
-      await import(`${serverDir}/angular-app-engine-manifest.mjs`)
-      const { default: handler } = await import(`${serverDir}/server.mjs`)
+      const toUrl = (file: string) => pathToFileURL(join(serverDir, file)).href
+      await import(toUrl('angular-app-manifest.mjs'))
+      await import(toUrl('angular-app-engine-manifest.mjs'))
+      const { default: handler } = await import(toUrl('server.mjs'))
       this.ssrHandler = handler
       this.logger.log('Angular SSR initialized')
     } catch (err) {
