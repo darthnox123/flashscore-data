@@ -13,7 +13,15 @@ export class SsrService {
 
   async initialize(expressApp: import('express').Application) {
     const { default: express } = await import('express')
-    expressApp.use(express.static(this.browserDistFolder, { maxAge: '1y', index: false }))
+    expressApp.use(express.static(this.browserDistFolder, {
+      maxAge: '1y',
+      index: false,
+      setHeaders(res, path) {
+        if (!/\.[a-f0-9]{8,}\.(js|css|mjs)$/.test(path)) {
+          res.setHeader('Cache-Control', 'public, max-age=3600')
+        }
+      },
+    }))
 
     try {
       const serverDir = resolve(process.cwd(), 'dist/client/server')
