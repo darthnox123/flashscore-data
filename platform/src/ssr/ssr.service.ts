@@ -17,10 +17,7 @@ export class SsrService {
 
     try {
       const serverDir = resolve(process.cwd(), 'dist/client/server')
-      const toUrl = (file: string) => pathToFileURL(join(serverDir, file)).href
-      await import(toUrl('angular-app-manifest.mjs'))
-      await import(toUrl('angular-app-engine-manifest.mjs'))
-      const { default: handler } = await import(toUrl('server.mjs'))
+      const { default: handler } = await import(pathToFileURL(join(serverDir, 'server.mjs')).href)
       this.ssrHandler = handler
       this.logger.log('Angular SSR initialized')
     } catch (err) {
