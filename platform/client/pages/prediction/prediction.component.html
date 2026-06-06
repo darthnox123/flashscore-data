@@ -58,7 +58,7 @@
         <!-- Body — stacks on mobile: home → away → center -->
         <div class="flex flex-col lg:flex-row">
           <app-team-panel
-            class="order-1 lg:order-1"
+            class="order-1 lg:order-1 flex-1"
             side="home"
             [teams]="teams"
             [selectedTeamId]="homeTeamId"
@@ -82,7 +82,7 @@
           />
 
           <app-team-panel
-            class="order-2 lg:order-3"
+            class="order-2 lg:order-3 flex-1"
             side="away"
             [teams]="teams"
             [selectedTeamId]="awayTeamId"
